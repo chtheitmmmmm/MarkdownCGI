@@ -1,4 +1,5 @@
 const path = require('path');
+const TerserPlugin = require("terser-webpack-plugin")
 
 module.exports = {
     mode: 'production',
@@ -9,15 +10,20 @@ module.exports = {
         filename: 'main.js',
     },
     resolve: {
-        extensions: ['.ts', '.js'],
+        enforceExtension: false
     },
     module: {
         rules: [
             {
                 test: /\.ts$/,
-                exclude: /node_modules/,
-                use: 'ts-loader',
+                use: ['ts-loader'],
             },
         ],
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin({
+           extractComments: false, //不将注释提取到单独的文件中
+        })],
     },
 };
